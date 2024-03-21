@@ -45,14 +45,12 @@ if(isset($_POST['edit_post'])){
 if(isset($_POST['delete_post'])){
     $id = $_POST['post_id'];
 
-    $query = "DELETE FROM posts WHERE id=:id";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-
-    // Refresh the page to reflect the changes
-    header("Location: index.php");
-    exit();
+    // Check if the user is admin before allowing deletion
+    $query_check_admin = "SELECT isAdmin FROM users WHERE username=:username";
+    $stmt_check_admin = $db->prepare($query_check_admin);
+    $stmt_check_admin->bindParam(':username', $username);
+    $stmt_check_admin->execute();
+    $user_info = $stmt_check_admin->fetch(PDO::FETCH_ASSOC);
 }
 
 // Fetch posts of the current user
@@ -123,14 +121,6 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <textarea name="new_content" class="form-control" placeholder="New Content" required></textarea>
         </div>
         <button type="submit" name="edit_post" class="btn btn-primary">Edit Post</button>
-    </form>
-
-    <h2 class="mt-2">Delete Blog Post</h2>
-    <form method="post" action="">
-        <div class="form-group">
-            <input type="text" name="post_id" class="form-control" placeholder="Post ID" required>
-        </div>
-        <button type="submit" name="delete_post" class="btn btn-primary">Delete Post</button>
     </form>
 </div>
 

@@ -12,12 +12,19 @@ if(isset($_POST['login'])){
 
     if($row){
         $_SESSION['username'] = $username;
-        header("Location: index.php");
+        if($row['isAdmin'] == 1) {
+            header("Location: admin.php");
+            exit; 
+        } else {
+            header("Location: index.php");
+            exit;
+        }
     } else {
         $error = "Invalid username or password";
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
