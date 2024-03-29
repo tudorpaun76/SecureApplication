@@ -2,20 +2,17 @@
 session_start();
 include 'db.php';
 
-// Fetch all blogs
 $query = "SELECT * FROM posts";
 $result = $db->query($query);
 
 if(isset($_POST['delete_post'])){
     $id = $_POST['post_id'];
 
-    // Delete the post
     $query_delete_post = "DELETE FROM posts WHERE id = :id";
     $stmt_delete_post = $db->prepare($query_delete_post);
     $stmt_delete_post->bindParam(':id', $id);
     $stmt_delete_post->execute();
 
-    // Redirect to prevent form resubmission
     header("Location: admin.php");
     exit;
 }
@@ -27,7 +24,6 @@ if(isset($_POST['delete_post'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -66,7 +62,6 @@ if(isset($_POST['delete_post'])){
         </table>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

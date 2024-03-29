@@ -2,7 +2,6 @@
 session_start();
 include 'db.php';
 
-// Check if user is logged in
 if(!isset($_SESSION['username'])){
     header("Location: login.php");
     exit();
@@ -10,7 +9,6 @@ if(!isset($_SESSION['username'])){
 
 $username = $_SESSION['username'];
 
-// Handle form submissions
 if(isset($_POST['create_post'])){
     $title = $_POST['title'];
     $content = $_POST['content'];
@@ -22,7 +20,6 @@ if(isset($_POST['create_post'])){
     $stmt->bindParam(':username', $username);
     $stmt->execute();
 
-    // Refresh the page to show the new post
     header("Location: index.php");
     exit();
 }
@@ -37,7 +34,6 @@ if(isset($_POST['edit_post'])){
     $stmt->bindParam(':id', $id);
     $stmt->execute();
 
-    // Refresh the page to reflect the changes
     header("Location: index.php");
     exit();
 }
@@ -45,7 +41,6 @@ if(isset($_POST['edit_post'])){
 if(isset($_POST['delete_post'])){
     $id = $_POST['post_id'];
 
-    // Check if the user is admin before allowing deletion
     $query_check_admin = "SELECT isAdmin FROM users WHERE username=:username";
     $stmt_check_admin = $db->prepare($query_check_admin);
     $stmt_check_admin->bindParam(':username', $username);
@@ -54,7 +49,6 @@ if(isset($_POST['delete_post'])){
 
 }
 
-// Fetch posts of the current user
 $query = "SELECT * FROM posts WHERE author=:username";
 $stmt = $db->prepare($query);
 $stmt->bindParam(':username', $username);
@@ -68,7 +62,6 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Blog</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
