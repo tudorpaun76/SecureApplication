@@ -1,5 +1,3 @@
-//Database refreshed before submission.
-
 User 1:
 Username - User01
 Password - user01
