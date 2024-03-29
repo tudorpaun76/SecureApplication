@@ -51,6 +51,7 @@ if(isset($_POST['delete_post'])){
     $stmt_check_admin->bindParam(':username', $username);
     $stmt_check_admin->execute();
     $user_info = $stmt_check_admin->fetch(PDO::FETCH_ASSOC);
+
 }
 
 // Fetch posts of the current user
@@ -122,6 +123,7 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <button type="submit" name="edit_post" class="btn btn-primary">Edit Post</button>
     </form>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
