@@ -6,24 +6,32 @@ if(isset($_POST['login'])){
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-    $result = $db->query($query);
-    $row = $result->fetch(PDO::FETCH_ASSOC);
+    $query = "SELECT * FROM users WHERE username=:username";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(":username", $username);
+    $stmt->execute();   
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if($row){
-        $_SESSION['username'] = $username;
-        if($row['isAdmin'] == 1) {
-            header("Location: admin.php");
-            exit; 
+        if(password_verify($password, $row['password'])) {
+            $_SESSION['username'] = $username;
+            if($row['isAdmin'] == 1) {
+                header("Location: admin.php");
+                exit; 
+            } else {
+                header("Location: index.php");
+                exit;
+            }
         } else {
-            header("Location: index.php");
-            exit;
+            $error = "Invalid username or password";
         }
     } else {
         $error = "Invalid username or password";
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>
